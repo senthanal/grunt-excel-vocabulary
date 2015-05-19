@@ -27,6 +27,22 @@ module.exports = function (grunt) {
 				src: [
 					'**/*.xlsx'
 				]
+			},
+			wgw:{
+				options:{
+					beautify : true,
+					keepEveryRowInFile : true
+				},
+				files: [{
+					expand: true,
+					cwd: './examples',
+					dest: './examples/locale',
+					src: [
+						'wgw_mobile_localizations.xlsx'
+					],
+					ext: '.json',
+					extDot: 'last'
+				}]
 			}
 		},
 
@@ -56,6 +72,13 @@ module.exports = function (grunt) {
 		'jshint',
 		'clean',
 		'excel_vocabulary',
+		'nodeunit'
+	]);	
+	
+	grunt.registerTask('test_wgw', [
+		'jshint',
+		'clean',
+		'excel_vocabulary:wgw',
 		'nodeunit'
 	]);
 

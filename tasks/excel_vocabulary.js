@@ -1,16 +1,17 @@
 'use strict';
 
 var path = require('path');
+var pathResolve = require('path').resolve;
+var currentDir = pathResolve(__dirname, '../');
 var parse = require('./../lib/parse');
 
 module.exports = function (grunt) {
 	grunt.registerMultiTask('excel_vocabulary', function () {
 		var options = this.options({
-            root: process.cwd(),
+            root: currentDir,
             beautify: true,
 			keepEveryRowInFile: false
 		});
-
 		this.files.forEach(function (f) {
 			f.src.filter(function (filepath) {
 				if (!grunt.file.exists(filepath)) {
@@ -24,11 +25,12 @@ module.exports = function (grunt) {
 				var resultJsonString;
 
 				if(options.keepEveryRowInFile){
-					var count = resultJson.length;
-					for(var i=0; i<count; i++){
+					for(var i in resultJson){
+						var pathArr = f.dest.split("/");
+						pathArr.pop();
 						resultJsonString = JSON.stringify(resultJson[i], null, options.beautify ? 4 : null);
-						grunt.file.write(f.dest + i.toLowerCase() + ( f.ext || ".json"), resultJsonString);
-						grunt.log.writeln('File "' + (f.dest + i.toLowerCase() ) + '" created.');
+						grunt.file.write(pathArr.join("/") + "/" + i.toLowerCase() + ( f.ext || ".json"), resultJsonString);
+						grunt.log.writeln('File "' + (pathArr.join("/") + "/" + i.toLowerCase() ) + '" created.');
 					}
 				}
 				else{
