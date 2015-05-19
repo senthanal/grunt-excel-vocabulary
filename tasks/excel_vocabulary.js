@@ -2,7 +2,7 @@
 
 var path = require('path');
 var pathResolve = require('path').resolve;
-var currentDir = pathResolve(__dirname, '../');
+var currentDir = pathResolve('./');
 var parse = require('./../lib/parse');
 
 module.exports = function (grunt) {
